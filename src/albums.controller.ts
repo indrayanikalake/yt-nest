@@ -7,8 +7,14 @@ import {
   Post,
   Redirect,
   Res,
+  Body,
 } from '@nestjs/common';
 import { Response } from 'express';
+
+interface AlbumDTO {
+  name: string;
+  email: string;
+}
 
 @Controller('/users')
 export class AlbumsController {
@@ -17,7 +23,11 @@ export class AlbumsController {
   @Header('cache-control', 'none')
   @Header('X-Name', 'Albums')
   @Redirect('/users/account', 302)
-  getAlbums(@Res({ passthrough: true }) res: Response) {
+  getAlbums(
+    @Res({ passthrough: true }) res: Response,
+    @Body() requestData: AlbumDTO,
+  ) {
+    console.log(requestData);
     const rn = ~~(Math.random() * 10 * 1);
     if (rn < 5) {
       return {
